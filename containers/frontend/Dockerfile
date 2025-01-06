@@ -1,0 +1,39 @@
+# Stage 1: Build the React app
+FROM node:18 AS build
+
+# Set the working directory
+WORKDIR /usr/src/app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Pass build arguments as environment variables
+ARG REACT_APP_BACKEND_URL
+ENV REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
+
+# Copy the application source code
+COPY . .
+
+# Build the React app for production
+RUN npm run build
+
+# Stage 2: Run the app using Node.js
+FROM node:18
+
+# Set the working directory
+WORKDIR /usr/src/app
+
+# Copy only the production build from the previous stage
+COPY --from=build /usr/src/app/build ./build
+
+# Install a minimal HTTP server to serve the React app
+RUN npm install -g serve
+
+# Expose the port for the React app
+EXPOSE 3000
+
+# Command to serve the app
+CMD ["serve", "-s", "build", "-l", "3000"]
