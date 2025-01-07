@@ -33,9 +33,12 @@ The directory structure of the repository is as follows:
 
 ## **Usage**
 
-### **Running Locally Without Docker Hub**
+### **Running Locally **
 
-To run the application locally without pushing images to Docker Hub, use the `build_and_run.sh` script. This build automation script:
+To run the application locally without pushing images to Docker Hub, use the `build_and_run.sh` script. 
+the script use to automate build process verify and verify stages during build 
+script will:
+
 - Builds the `frontend` and `backend` containers.
 - Logs errors in case of build failures.
 - Starts the application automatically upon successful builds.
@@ -50,27 +53,29 @@ The application consists of two containers:
 
 1. **Frontend**:
    - Contains the React-based user interface.
-   - Displays debug information and data fetched from the backend in a tabular format.
+     which displays some debug information and data fetched from the backend in a tabular format.
 
 2. **Backend**:
    - Implements a Python Flask application.
-   - Provides JSON data via an API endpoint consumed by the frontend.
-
+     which  gather data  from internet about a TV show (The Ren & Stimpy Show)
+     and populate the data with JSON to the client
+     
 ---
 
 ## **Requirements**
 
 Before running the application, ensure the following:
 - **Docker**: Installed and configured on your system.
-- **Network Access**: Backend and frontend should communicate effectively within the Docker network.
-
+- **Internet**: Backend require internet access to gather data
+  
 ---
 
 ## **Architecture**
 
 - **Initial Design**:
-  - The frontend was placed in a bridged network for external accessibility.
-  - A private network was also configured for inter-container communication.
+  - during the initial design i was trying to place frontend in bridge network, 
+    and backend in private network so front and backend will communicate over the private network
+    i had to switch to scenario where the two are on the bridge network.
 
 - **Current Setup**:
   - Both containers are deployed on a bridged network for simplicity and accessibility from external systems.
@@ -81,8 +86,8 @@ Before running the application, ensure the following:
 ## **Developer Notes**
 
 1. **Build Script**:
-   - Each container includes a `_compile.sh` script for building and pushing images to Docker Hub.
-   - By default, these scripts are configured to push images to `dockerhub.com/judab`.
+   - Each container directory includes a `_compile.sh` script for building and pushing images to Docker Hub.
+   - By default, these scripts are configured to push images to `dockerhub.com/judab` .
 
 2. **Backend CORS Support**:
    - Ensure the backend is configured to support Cross-Origin Resource Sharing (CORS) for seamless communication with the frontend.
