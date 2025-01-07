@@ -1,0 +1,139 @@
+{
+  "dashboard": {
+    "id": null,
+    "uid": "frontend-metrics",
+    "title": "Frontend Metrics Dashboard",
+    "timezone": "browser",
+    "schemaVersion": 30,
+    "version": 1,
+    "refresh": "5s",
+    "panels": [
+      {
+        "type": "stat",
+        "title": "Process Virtual Memory (Bytes)",
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 0,
+          "y": 0
+        },
+        "targets": [
+          {
+            "expr": "process_virtual_memory_bytes",
+            "refId": "A"
+          }
+        ],
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "unit": "bytes",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "green", "value": null },
+                { "color": "red", "value": 1e9 }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "type": "stat",
+        "title": "Node.js Active Requests",
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 6,
+          "y": 0
+        },
+        "targets": [
+          {
+            "expr": "nodejs_active_requests",
+            "refId": "B"
+          }
+        ],
+        "datasource": "Prometheus"
+      },
+      {
+        "type": "stat",
+        "title": "Node.js Active Requests (Total)",
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 12,
+          "y": 0
+        },
+        "targets": [
+          {
+            "expr": "nodejs_active_requests_total",
+            "refId": "C"
+          }
+        ],
+        "datasource": "Prometheus"
+      },
+      {
+        "type": "graph",
+        "title": "Frontend API Requests (Total)",
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 0,
+          "y": 6
+        },
+        "targets": [
+          {
+            "expr": "frontend_api_requests_total",
+            "legendFormat": "API Requests",
+            "refId": "D"
+          }
+        ],
+        "datasource": "Prometheus",
+        "xaxis": {
+          "mode": "time"
+        },
+        "yaxes": [
+          {
+            "format": "short",
+            "label": "Requests",
+            "logBase": 1,
+            "min": 0
+          },
+          {
+            "show": true
+          }
+        ]
+      },
+      {
+        "type": "stat",
+        "title": "Service Status (up)",
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 12,
+          "y": 6
+        },
+        "targets": [
+          {
+            "expr": "up",
+            "legendFormat": "{{instance}}",
+            "refId": "E"
+          }
+        ],
+        "datasource": "Prometheus",
+        "fieldConfig": {
+          "defaults": {
+            "unit": "none",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "red", "value": 0 },
+                { "color": "green", "value": 1 }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "overwrite": true
+}

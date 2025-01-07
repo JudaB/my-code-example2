@@ -20,20 +20,32 @@ COPY . .
 # Build the React app for production
 RUN npm run build
 
-# Stage 2: Run the app using Node.js
+# Stage 2: Serve the app and expose Prometheus metrics
 FROM node:18
 
 # Set the working directory
 WORKDIR /usr/src/app
 
+# Install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Install serve for serving the React app
+RUN npm install -g serve
+
+# Install Prometheus client library
+RUN npm install prom-client
+
 # Copy only the production build from the previous stage
 COPY --from=build /usr/src/app/build ./build
 
-# Install a minimal HTTP server to serve the React app
-RUN npm install -g serve
+# Copy Prometheus metrics server script
+COPY prometheus-metrics.js ./prometheus-metrics.js
 
-# Expose the port for the React app
+# Expose ports for the React app and Prometheus metrics
 EXPOSE 3000
+EXPOSE 9091
 
-# Command to serve the app
-CMD ["serve", "-s", "build", "-l", "3000"]
+# Run the app and metrics server
+CMD ["node", "prometheus-metrics.js"]
+

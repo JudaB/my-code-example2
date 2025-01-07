@@ -17,7 +17,7 @@ services:
     build:
       context: ./containers/frontend
       args:
-        REACT_APP_BACKEND_URL: "http://backend:5000/ram"
+        REACT_APP_BACKEND_URL: "http://localhost:5000/ram"
     container_name: frontend
     networks:
       - internal_network
@@ -25,7 +25,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - REACT_APP_BACKEND_URL=http://backend:5000/ram
+      - REACT_APP_BACKEND_URL=http://localhost:5000/ram
 
   grafana:
     image: grafana/grafana:latest
