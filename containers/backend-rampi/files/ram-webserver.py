@@ -7,13 +7,16 @@
 import json
 import pprint
 import requests
-import sys
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify
 from flask_cors import CORS  # Import flask-cors
+from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST  # Prometheus client
 
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
+
+# Prometheus metrics
+REQUEST_COUNTER = Counter('ram_api_requests_total', 'Total requests to /ram API')
 
 # Array that will hold characters according to the filter
 WebserverData = []
@@ -58,8 +61,14 @@ if len(WebserverData) < 1:
     print("List contains no data. Aborting.")
     exit(1)
 else:
+    # /ram route to return data
     @app.get("/ram")
     def get_ram():
+        REQUEST_COUNTER.inc()  # Increment Prometheus counter
         return jsonify(WebserverData)
 
+    # /metrics route for Prometheus
+    @app.get("/metrics")
+    def metrics():
+        return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
 

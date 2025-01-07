@@ -2,3 +2,5 @@
 ramapi
 flask
 flask-cors
+requests
+prometheus-client

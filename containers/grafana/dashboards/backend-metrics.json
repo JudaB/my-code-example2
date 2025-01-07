@@ -1,0 +1,45 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "Backend Metrics",
+    "uid": "backend-metrics",
+    "timezone": "browser",
+    "schemaVersion": 30,
+    "version": 1,
+    "panels": [
+      {
+        "type": "graph",
+        "title": "Requests to /ram API",
+        "gridPos": {
+          "h": 9,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "targets": [
+          {
+            "expr": "ram_api_requests_total",
+            "legendFormat": "{{instance}}",
+            "refId": "A"
+          }
+        ],
+        "datasource": "Prometheus",
+        "yaxes": [
+          {
+            "format": "short",
+            "label": "Requests",
+            "logBase": 1,
+            "min": 0,
+            "show": true
+          },
+          {
+            "format": "short",
+            "show": true
+          }
+        ]
+      }
+    ]
+  },
+  "overwrite": true
+}
+
