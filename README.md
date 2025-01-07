@@ -1,8 +1,17 @@
-in order to install the app please clone the repo from 
-https://github.com/JudaB/my-code-example2
 
-the directory structure as the following
+# **React-Backend Dockerized Application**
 
+## **Installation**
+
+To install the application, clone the repository from:
+
+```bash
+git clone https://github.com/JudaB/my-code-example2
+```
+
+The directory structure of the repository is as follows:
+
+```
 /containers
 ├── backend/
 │   ├── Dockerfile            # Backend Dockerfile
@@ -18,61 +27,92 @@ the directory structure as the following
 ├── docker-compose.yml        # Orchestrates the frontend and backend
 ├── build_and_run.sh          # Script to automate build and deployment
 ├── README.md                 # Project documentation
+```
 
-when running local without pushing the images to dockerhub
+---
 
-use _build_and_run.sh script
+## **Usage**
 
-it is build automation script it will try to build each  containers
-and will provide error logs in case of failure during the build
+### **Running Locally Without Docker Hub**
 
-once the two containers are build successfully the app will boot, 
-the app require to have ports 5000 and 3000 (please make sure they are available)
+To run the application locally without pushing images to Docker Hub, use the `build_and_run.sh` script. This build automation script:
+- Builds the `frontend` and `backend` containers.
+- Logs errors in case of build failures.
+- Starts the application automatically upon successful builds.
 
-there are two containers:
-1) frontend 
-2) backend
+Ensure that ports **5000** (for the backend) and **3000** (for the frontend) are available on your system.
 
-frontend contain the react code
-backendapp will provide json with data and frontend
-will show some debug information and the data which arrive from the json
-within a table
+---
 
-it is all set you ready to go , good luck.
+### **Container Overview**
 
+The application consists of two containers:
 
+1. **Frontend**:
+   - Contains the React-based user interface.
+   - Displays debug information and data fetched from the backend in a tabular format.
 
-Requirements:
-- make sure you have docker
+2. **Backend**:
+   - Implements a Python Flask application.
+   - Provides JSON data via an API endpoint consumed by the frontend.
 
-architecture:
-- note for architecture in the initial design 
-  i tried to make the frontend in the bridge network
-  where the backend and the frondend will share a private network
-  at the end i put them both on the bridge
+---
 
-- the two containers are work properly on bridge interface
-  i use the bridge so i can access it from my workstation
+## **Requirements**
 
-- additional private network interface added for inter communication
+Before running the application, ensure the following:
+- **Docker**: Installed and configured on your system.
+- **Network Access**: Backend and frontend should communicate effectively within the Docker network.
 
+---
 
-note for developers:
- - there is a build script which build and upload the image as well
-   look for in each container _compile.sh for now it is configure to upload
-   the images to dockerhub.com/judab 
+## **Architecture**
 
-troubleshooting:
-1. in case you dont see data a "Failed to Fetch" error will pop up,
-   you have to make sure the backend url is properly configured in docker-
-   compose.yaml ,  you can verify the value of the backendURL it is in the welcome   
-   page
+- **Initial Design**:
+  - The frontend was placed in a bridged network for external accessibility.
+  - A private network was also configured for inter-container communication.
 
-2. make sure the backend support CORS 
+- **Current Setup**:
+  - Both containers are deployed on a bridged network for simplicity and accessibility from external systems.
+  - A private network interface is still included for internal communication.
 
-3. make sure your local PC is able to reach the backend for example
-   curl http://localhost:5000/ram
+---
 
+## **Developer Notes**
 
+1. **Build Script**:
+   - Each container includes a `_compile.sh` script for building and pushing images to Docker Hub.
+   - By default, these scripts are configured to push images to `dockerhub.com/judab`.
 
-# my-code-example2
+2. **Backend CORS Support**:
+   - Ensure the backend is configured to support Cross-Origin Resource Sharing (CORS) for seamless communication with the frontend.
+
+---
+
+## **Troubleshooting**
+
+### **Common Issues**
+
+1. **Failed to Fetch Error**:
+   - Check the backend URL configuration in `docker-compose.yml`. The backend URL is displayed on the frontend welcome page for verification.
+   - Example configuration:
+     ```yaml
+     environment:
+       - REACT_APP_BACKEND_URL=http://localhost:5000/ram
+     ```
+
+2. **Backend CORS Issues**:
+   - Ensure the backend supports CORS. The Flask backend must include the necessary headers or use the `flask-cors` library.
+
+3. **Backend Reachability**:
+   - Verify that the backend is reachable from your local machine using:
+     ```bash
+     curl http://localhost:5000/ram
+     ```
+
+---
+
+## **Good Luck**
+
+Once the containers are built and running, you are ready to use the application. Enjoy, and good luck with your development!
+
