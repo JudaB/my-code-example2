@@ -74,8 +74,9 @@ Before running the application, ensure the following:
 
 - **Initial Design**:
   - during the initial design i was trying to place frontend in bridge network, 
-    and backend in private network so front and backend will communicate over the private network
-    i had to switch to scenario where the two are on the bridge network.
+    and backend to communicate with frontend over private network
+    due to errors with react i switch to simple aproach however in real life backend will be in behind WAF and in different subnet
+    
 
 - **Current Setup**:
   - Both containers are deployed on a bridged network for simplicity and accessibility from external systems.
